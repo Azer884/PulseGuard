@@ -1,6 +1,6 @@
 # PulseGuard — Privacy-First AI Workforce & Project Alignment
 
-PulseGuard is a privacy-first AI workforce assistant designed to identify project friction, improve employee-project alignment, and reduce onboarding time when employees transition between projects.
+PulseGuard is a privacy-first AI workforce assistant designed to safeguard employee wellbeing by identifying project friction, improving employee-project alignment, and easing the transition when employees move between projects — reducing both onboarding time and the burnout risk that comes with it.
 
 ## Privacy and Data Handling
 
