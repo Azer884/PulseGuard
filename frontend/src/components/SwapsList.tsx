@@ -7,10 +7,11 @@ interface Props {
   nameOf: (employeeId: string) => string;
   taskLabel: (taskId: string) => string;
   busy: boolean;
+  atRiskCount: number;
   onApply: (swap: ActionableSwap) => void;
 }
 
-export default function SwapsList({ swaps, nameOf, taskLabel, busy, onApply }: Props) {
+export default function SwapsList({ swaps, nameOf, taskLabel, busy, atRiskCount, onApply }: Props) {
   return (
     <Card className="p-6 space-y-4">
       <SectionHeading
@@ -19,7 +20,9 @@ export default function SwapsList({ swaps, nameOf, taskLabel, busy, onApply }: P
       />
       {swaps.length === 0 ? (
         <p className="text-sm text-slate-500 dark:text-slate-400">
-          No valid swap found. The engine does not fabricate recommendations — check warnings for details.
+          {atRiskCount === 0
+            ? "Nobody is at Warning or Critical risk, so no swap is needed."
+            : "No valid swap found for the at-risk twins. The engine does not fabricate recommendations — see warnings for why."}
         </p>
       ) : (
         <div className="space-y-3">

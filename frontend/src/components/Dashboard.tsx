@@ -24,7 +24,6 @@ import type { ActionableSwap, AssignmentChange, EmployeeResult, EmployeeSummary,
 import DeltaMetricsPanel from "./DeltaMetricsPanel";
 import ProjectsPanel from "./ProjectsPanel";
 import RotationsTable from "./RotationsTable";
-import SimulationLoader, { SIMULATION_DURATION_MS } from "./SimulationLoader";
 import SwapsList from "./SwapsList";
 import TeamPanel from "./TeamPanel";
 import TwinCard from "./TwinCard";
@@ -125,11 +124,7 @@ export default function Dashboard({ initialTeam, initialProjects, initialProject
     async (mode: Mode, target?: string | null, projectId: string = activeProjectId) => {
       setBusyMode(mode);
       try {
-        // Hold the loader for a minimum time so the run reads as a simulation; results are the engine's.
-        const [response] = await Promise.all([
-          api.simulate(projectId, mode, target),
-          new Promise((resolve) => setTimeout(resolve, SIMULATION_DURATION_MS[mode])),
-        ]);
+        const response = await api.simulate(projectId, mode, target);
         setSim(response);
         setStale(false);
         const name = target ? response.context.employees.find((e) => e.employee_id === target)?.name : undefined;
@@ -530,7 +525,7 @@ export default function Dashboard({ initialTeam, initialProjects, initialProject
                   )}
 
                   {result && isBurnoutMode && (
-                    <SwapsList swaps={result.recommendations.actionable_swaps} nameOf={nameOf} taskLabel={taskLabel} busy={busy} onApply={applySwap} />
+                    <SwapsList swaps={result.recommendations.actionable_swaps} nameOf={nameOf} taskLabel={taskLabel} busy={busy} atRiskCount={atRiskCount ?? 0} onApply={applySwap} />
                   )}
                   {result && result.mode === "optimize_fastest" && (
                     <RotationsTable result={result} baseline={sim.payload.current_assignment} nameOf={nameOf} taskLabel={taskLabel} busy={busy} onApply={applyRotation} />
@@ -588,10 +583,6 @@ export default function Dashboard({ initialTeam, initialProjects, initialProject
                 </>
               )}
             </div>
-          )}
-
-          {busyMode && tab === "simulation" && (
-            <SimulationLoader mode={busyMode} projectName={projects.find((p) => p.project_id === activeProjectId)?.name} />
           )}
 
           {tab === "payload" && (

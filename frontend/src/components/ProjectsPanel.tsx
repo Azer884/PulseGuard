@@ -136,7 +136,7 @@ export default function ProjectsPanel({ projects, activeProject, team, onSelect,
                     disabled={active}
                     className="flex-1 bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold px-3 py-2 rounded-lg disabled:opacity-60"
                   >
-                    {active ? "Open" : "Open"}
+                    {active ? "Viewing" : "Open"}
                   </button>
                   {p.source === "plane" && (
                     <>
